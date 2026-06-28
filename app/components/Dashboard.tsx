@@ -16,14 +16,16 @@ type SavedTopic = {
   preview: Article[]
 }
 
+function getTopics(): SavedTopic[] {
+  if (typeof window === "undefined") return []
+  return JSON.parse(localStorage.getItem("veille-topics") ?? "[]")
+}
+
 export default function Dashboard() {
   const [topics, setTopics] = useState<SavedTopic[]>([])
-  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
-    const saved = JSON.parse(localStorage.getItem("veille-topics") ?? "[]")
-    setTopics(saved)
+    setTopics(getTopics())
   }, [])
 
   function removeTopic(slug: string) {
@@ -31,8 +33,6 @@ export default function Dashboard() {
     localStorage.setItem("veille-topics", JSON.stringify(updated))
     setTopics(updated)
   }
-
-  if (!mounted) return null
 
   if (topics.length === 0) {
     return (
@@ -63,7 +63,6 @@ export default function Dashboard() {
           key={topic.slug}
           className="bg-gray-900/50 border border-white/5 rounded-2xl p-5 sm:p-6"
         >
-          {/* Header du topic */}
           <div className="flex items-center justify-between mb-4">
             <Link
               href={`/topic/${topic.slug}`}
@@ -89,7 +88,6 @@ export default function Dashboard() {
             </button>
           </div>
 
-          {/* Articles preview */}
           <div className="flex flex-col divide-y divide-white/5">
             {topic.preview.map((article, i) => (
               <a
@@ -114,7 +112,6 @@ export default function Dashboard() {
             ))}
           </div>
 
-          {/* Footer */}
           <div className="mt-4 pt-4 border-t border-white/5">
             <Link
               href={`/topic/${topic.slug}`}
