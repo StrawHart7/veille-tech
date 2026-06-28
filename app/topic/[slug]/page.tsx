@@ -1,3 +1,5 @@
+import TopicSaver from "@/app/components/TopicSaver";
+
 type Article = {
   title: string;
   description: string;
@@ -34,10 +36,15 @@ export default async function TopicPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white p-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-1">
-        Sujet : <span className="text-blue-400">{slug}</span>
-      </h1>
-      <p className="text-gray-400 mb-8">{articles.length} articles trouvés</p>
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold mb-1">
+            Sujet : <span className="text-blue-400">{slug}</span>
+          </h1>
+          <p className="text-gray-400">{articles.length} articles trouvés</p>
+        </div>
+        <TopicSaver slug={slug} />
+      </div>
 
       <div className="flex flex-col gap-4">
         {articles.map((article, i) => (
