@@ -30,6 +30,14 @@ async function getNews(topic: string): Promise<Article[]> {
   return data.articles ?? [];
 }
 
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params
+  return {
+    title: `${slug} — Veille Tech`,
+    description: `Les dernières news sur ${slug}`,
+  }
+}
+
 export default async function TopicPage({ params }: Props) {
   const { slug } = await params;
   const articles = await getNews(slug);
